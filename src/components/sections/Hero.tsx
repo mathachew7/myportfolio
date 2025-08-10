@@ -6,11 +6,11 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import subash from "../../assets/subash.jpeg"; // keep path correct for Vite
+
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
-
+  const MY_IMAGE = "/images/subash.jpeg";
   // Measure once (ResizeObserver) instead of on every mouse move
   const sectionRef = useRef<HTMLElement | null>(null);
   const [bounds, setBounds] = useState({ w: 1, h: 1 });
@@ -193,7 +193,7 @@ export default function Hero() {
               {/* Photo frame */}
               <div className="relative h-full w-full overflow-hidden rounded-full border-[3px] border-emerald-300/30 shadow-2xl shadow-emerald-500/20">
                 <img
-                  src={subash}
+                  src={MY_IMAGE}
                   alt="Subash Yadav"
                   className="h-full w-full object-cover"
                   loading="eager"
@@ -201,10 +201,10 @@ export default function Hero() {
                   onError={(e) => {
                     (e.currentTarget.parentElement as HTMLElement).classList.add("ring-4", "ring-red-500");
                     e.currentTarget.style.display = "none";
-                    // eslint-disable-next-line no-console
-                    console.warn("Image failed to load:", subash);
+                    console.warn("Image failed to load:", SUBASH);
                   }}
                 />
+
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(130deg,rgba(255,255,255,0.08),transparent_40%)]" />
               </div>
 
