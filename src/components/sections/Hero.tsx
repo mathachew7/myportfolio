@@ -201,7 +201,7 @@ export default function Hero() {
                   onError={(e) => {
                     (e.currentTarget.parentElement as HTMLElement).classList.add("ring-4", "ring-red-500");
                     e.currentTarget.style.display = "none";
-                    console.warn("Image failed to load:", SUBASH);
+                    console.warn("Image failed to load:", MY_IMAGE);
                   }}
                 />
 
