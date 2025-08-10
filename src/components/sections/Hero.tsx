@@ -10,7 +10,7 @@ import {
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
-  const MY_IMAGE = "/images/subash.jpeg";
+  const MY_IMAGE = "/images/subash_profile.jpeg";
   // Measure once (ResizeObserver) instead of on every mouse move
   const sectionRef = useRef<HTMLElement | null>(null);
   const [bounds, setBounds] = useState({ w: 1, h: 1 });
