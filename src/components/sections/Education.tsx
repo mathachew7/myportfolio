@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { GraduationCap, MapPin, Calendar, Rows, LayoutGrid } from "lucide-react";
 
 type School = {
@@ -24,15 +24,20 @@ const schools: School[] = [
   },
 ];
 
+// 👇 Narrow these so "spring" is a literal, not string
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
-};
+} as const satisfies Variants;
 
 const item = {
   hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 240, damping: 22 } },
-};
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 240, damping: 22 },
+  },
+} as const satisfies Variants;
 
 type ViewMode = "cards" | "timeline";
 
