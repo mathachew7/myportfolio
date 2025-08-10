@@ -1,43 +1,75 @@
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import subash from "../../assets/subash.jpeg"; // ← keep path correct for Vite
+import { useState, useMemo, useEffect, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+import subash from "../../assets/subash.jpeg"; // keep path correct for Vite
 
 export default function Hero() {
-  // Mouse-follow spotlight (disabled when reduced motion is preferred)
+  const prefersReducedMotion = useReducedMotion();
+
+  // Measure once (ResizeObserver) instead of on every mouse move
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [bounds, setBounds] = useState({ w: 1, h: 1 });
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      setBounds({ w: width, h: height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Mouse-follow spotlight
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const bgX = useTransform(mx, (v) => `calc(${(v / bounds.w) * 100}% + 0px)`);
-  const bgY = useTransform(my, (v) => `calc(${(v / bounds.h) * 100}% + 0px)`);
+  const bgX = useTransform(mx, (v) => `calc(${(v / Math.max(1, bounds.w)) * 100}% + 0px)`);
+  const bgY = useTransform(my, (v) => `calc(${(v / Math.max(1, bounds.h)) * 100}% + 0px)`);
 
-  // Lightweight rotating titles under your name (typewriter vibe)
+  // Rotating titles (interval-driven)
   const titles = useMemo(
     () => ["Data Engineer", "ETL Specialist", "Analytics Builder", "Dashboard Pro"],
     []
   );
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    if (prefersReducedMotion) return; // keep static for reduced motion users
+    const id = setInterval(() => setIdx((i) => (i + 1) % titles.length), 2000);
+    return () => clearInterval(id);
+  }, [titles.length, prefersReducedMotion]);
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className="relative flex min-h-[100svh] items-center overflow-hidden"
       onMouseMove={(e) => {
         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        setBounds({ w: rect.width, h: rect.height });
         mx.set(e.clientX - rect.left);
         my.set(e.clientY - rect.top);
       }}
     >
+      {/* keep Tailwind purge-safe classes used via JS */}
+      <span className="hidden ring-4 ring-red-500" aria-hidden />
+
       {/* Deep green base */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#07140f] via-[#0a1b14] to-[#07140f]" />
 
       {/* Mouse spotlight (auto-softened on mobile) */}
-      <motion.div
-        aria-hidden
-        style={{
-          background: `radial-gradient(550px 550px at ${bgX} ${bgY}, rgba(52, 211, 153, 0.12), transparent 60%)`,
-        }}
-        className="pointer-events-none absolute inset-0 [@media(prefers-reduced-motion:reduce)]:hidden"
-      />
+      {!prefersReducedMotion && (
+        <motion.div
+          aria-hidden
+          style={{
+            background: `radial-gradient(550px 550px at ${bgX} ${bgY}, rgba(52, 211, 153, 0.12), transparent 60%)`,
+          }}
+          className="pointer-events-none absolute inset-0 [@media(prefers-reduced-motion:reduce)]:hidden"
+        />
+      )}
 
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -bottom-40 -right-40 h-[60vh] w-[60vh] rounded-full bg-emerald-400/12 blur-[140px]" />
@@ -76,14 +108,14 @@ export default function Hero() {
             <div className="mt-2 h-7 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={Math.floor(Date.now() / 2000) % titles.length}
+                  key={idx}
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.35 }}
                   className="text-[15px] sm:text-base text-emerald-50/80"
                 >
-                  {titles[Math.floor(Date.now() / 2000) % titles.length]} · Python · SQL · AWS · Docker
+                  {titles[idx]} · Python · SQL · AWS · Docker
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -128,7 +160,8 @@ export default function Hero() {
                 Contact
               </a>
               <a
-                href="/Subash_Resume.pdf"
+                href="/Subash_Yadav_Resume.pdf"
+                download
                 className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 backdrop-blur transition hover:bg-white/10"
               >
                 Download Résumé
@@ -146,13 +179,17 @@ export default function Hero() {
             <div className="relative h-[17rem] w-[17rem] sm:h-[19rem] sm:w-[19rem] md:h-[20rem] md:w-[20rem]">
               {/* Outer breathing glow */}
               <div className="pointer-events-none absolute -inset-6 animate-pulse rounded-full bg-emerald-400/10 blur-2xl" />
-              {/* Conic ring (reduced on mobile, disables with reduced motion) */}
-              <motion.div
-                aria-hidden
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
-                className="absolute -inset-[10px] rounded-full bg-[conic-gradient(from_0deg,rgba(16,185,129,0.0),rgba(16,185,129,0.45),rgba(16,185,129,0.0))] blur-[2px] [@media(prefers-reduced-motion:reduce)]:hidden"
-              />
+
+              {/* Conic ring */}
+              {!prefersReducedMotion && (
+                <motion.div
+                  aria-hidden
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
+                  className="absolute -inset-[10px] rounded-full bg-[conic-gradient(from_0deg,rgba(16,185,129,0.0),rgba(16,185,129,0.45),rgba(16,185,129,0.0))] blur-[2px] [@media(prefers-reduced-motion:reduce)]:hidden"
+                />
+              )}
+
               {/* Photo frame */}
               <div className="relative h-full w-full overflow-hidden rounded-full border-[3px] border-emerald-300/30 shadow-2xl shadow-emerald-500/20">
                 <img
@@ -176,7 +213,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.5 }}
-                className="pointer-events-none absolute -right-6 top-8 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur xs:block"
+                className="pointer-events-none absolute -right-6 top-8 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur sm:block"
               >
                 ETL
               </motion.div>
@@ -184,7 +221,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.5 }}
-                className="pointer-events-none absolute -left-6 bottom-8 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur xs:block"
+                className="pointer-events-none absolute -left-6 bottom-8 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur sm:block"
               >
                 BI
               </motion.div>
@@ -192,7 +229,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.55, duration: 0.5 }}
-                className="pointer-events-none absolute -left-8 top-6 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur xs:block"
+                className="pointer-events-none absolute -left-8 top-6 hidden rounded-full border border-emerald-300/20 bg-white/5 px-3 py-1 text-[10px] text-emerald-50/80 backdrop-blur sm:block"
               >
                 SQL
               </motion.div>
@@ -202,17 +239,18 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator (shrinks on small screens) */}
-      <motion.div
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2"
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ y: [0, -8, 0], opacity: [0.5, 0.9, 0.5] }}
-        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="h-9 w-5 rounded-full border-2 border-emerald-300/70 p-1 sm:h-10 sm:w-6">
-          <div className="h-2 w-2 rounded-full bg-emerald-400" />
-        </div>
-      </motion.div>
-
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ y: [0, -8, 0], opacity: [0.5, 0.9, 0.5] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="h-9 w-5 rounded-full border-2 border-emerald-300/70 p-1 sm:h-10 sm:w-6">
+            <div className="h-2 w-2 rounded-full bg-emerald-400" />
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 }

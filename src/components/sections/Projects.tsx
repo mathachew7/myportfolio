@@ -8,7 +8,7 @@ type Project = {
   impact: string;
   stack: string[];
   github: string;
-  tags: string[]; // quick filters
+  tags: string[];
 };
 
 const GITHUB = "https://github.com/mathachew7";
@@ -66,10 +66,11 @@ const projects: Project[] = [
 
 const ALL_TAGS = ["ETL", "ML", "BI", "Dashboards", "DWH", "Modeling", "Healthcare", "Automation", "Analytics", "Cost"];
 
+// ✅ make variants literal-typed for Framer's TS
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
-};
+} as const;
 
 const card = {
   hidden: { opacity: 0, y: 14, scale: 0.98 },
@@ -79,16 +80,16 @@ const card = {
     scale: 1,
     transition: { type: "spring", stiffness: 240, damping: 22 },
   },
-};
+} as const;
 
 export default function Projects() {
   const [query, setQuery] = useState("");
   const [view, setView] = useState<"grid" | "list">("grid");
-  const [open, setOpen] = useState<Record<string, boolean>>({}); // per-card collapse/expand
+  const [open, setOpen] = useState<Record<string, boolean>>({});
   const [activeTags, setActiveTags] = useState<string[]>([]);
 
   const toggleOpen = (title: string) =>
-    setOpen((s) => ({ ...s, [title]: !s[title] })); // ✅ expand/collapse both ways
+    setOpen((s) => ({ ...s, [title]: !s[title] }));
 
   const toggleTag = (t: string) =>
     setActiveTags((arr) => (arr.includes(t) ? arr.filter((x) => x !== t) : [...arr, t]));
@@ -111,14 +112,11 @@ export default function Projects() {
 
   return (
     <section id="projects" className="relative w-full py-20">
-      {/* full-bleed gradient to match Hero/About */}
       <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_20%_-10%,rgba(16,185,129,0.10),transparent),radial-gradient(1000px_480px_at_90%_20%,rgba(79,70,229,0.10),transparent),linear-gradient(135deg,#07140f_0%,#0a1b14_50%,#07140f_100%)]" />
-      {/* soft blobs */}
       <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-emerald-400/15 blur-[100px]" />
       <div className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-indigo-400/15 blur-[100px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8">
-        {/* header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs tracking-[0.3em] text-emerald-300/80">BUILDS</p>
@@ -127,7 +125,6 @@ export default function Projects() {
             </h2>
           </div>
 
-          {/* controls */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="group flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">
               <Search className="h-4 w-4 text-neutral-400" />
@@ -143,9 +140,7 @@ export default function Projects() {
               <button
                 onClick={() => setView("grid")}
                 className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm ${
-                  view === "grid"
-                    ? "bg-white/10 text-white"
-                    : "text-neutral-300 hover:bg-white/10 hover:text-white"
+                  view === "grid" ? "bg-white/10 text-white" : "text-neutral-300 hover:bg-white/10 hover:text-white"
                 }`}
                 aria-label="Grid view"
               >
@@ -154,9 +149,7 @@ export default function Projects() {
               <button
                 onClick={() => setView("list")}
                 className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm ${
-                  view === "list"
-                    ? "bg-white/10 text-white"
-                    : "text-neutral-300 hover:bg-white/10 hover:text-white"
+                  view === "list" ? "bg-white/10 text-white" : "text-neutral-300 hover:bg-white/10 hover:text-white"
                 }`}
                 aria-label="List view"
               >
@@ -166,7 +159,6 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* quick filters */}
         <div className="mb-6 flex flex-wrap items-center gap-2">
           <span className="mr-1 inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs text-neutral-300">
             <Filter className="h-3.5 w-3.5" /> Filters
@@ -197,24 +189,23 @@ export default function Projects() {
           )}
         </div>
 
-        {/* list/grid */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
           className={view === "grid" ? "grid gap-6 md:grid-cols-2" : "flex flex-col gap-4"}
         >
-          {filtered.map((p, i) => {
+          {filtered.map((p) => {
             const isOpen = !!open[p.title];
             const Base = view === "grid" ? motion.a : motion.div;
             const baseProps =
               view === "grid"
-                ? {
+                ? ({
                     href: p.github,
                     target: "_blank",
                     rel: "noreferrer",
                     "aria-label": `${p.title} on GitHub`,
-                  }
+                  } as const)
                 : {};
 
             return (
@@ -227,7 +218,6 @@ export default function Projects() {
                   view === "list" ? "sm:flex sm:items-start sm:justify-between" : ""
                 }`}
               >
-                {/* accent line */}
                 <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
 
                 <div className="pr-2">
@@ -258,7 +248,6 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {/* collapsible details */}
                   <div className="mt-3">
                     <button
                       type="button"
@@ -302,14 +291,12 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* radial hover highlight */}
                 <span className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(180px_110px_at_10%_0%,rgba(52,211,153,0.14),transparent_70%)]" />
               </Base>
             );
           })}
         </motion.div>
 
-        {/* empty state */}
         {filtered.length === 0 && (
           <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-neutral-300">
             No projects found. Try clearing filters or adjusting your search.

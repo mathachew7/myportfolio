@@ -42,10 +42,13 @@ export default function Education() {
 
   return (
     <section id="education" className="relative w-full py-20">
-      {/* full-bleed gradient — matches Projects/Skills */}
-      <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_20%_-10%,rgba(16,185,129,0.10),transparent),radial-gradient(1000px_480px_at_90%_20%,rgba(79,70,229,0.10),transparent),linear-gradient(135deg,#07140f_0%,#0a1b14_50%,#07140f_100%)]" />
-      <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-emerald-400/15 blur-[100px]" />
-      <div className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-indigo-400/15 blur-[100px]" />
+      {/* background */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_20%_-10%,rgba(16,185,129,0.10),transparent),radial-gradient(1000px_480px_at_90%_20%,rgba(79,70,229,0.10),transparent),linear-gradient(135deg,#07140f_0%,#0a1b14_50%,#07140f_100%)]"
+      />
+      <div aria-hidden className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-emerald-400/15 blur-[100px]" />
+      <div aria-hidden className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-indigo-400/15 blur-[100px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8">
         {/* header */}
@@ -62,23 +65,29 @@ export default function Education() {
           </div>
 
           {/* view toggle */}
-          <div className="inline-flex items-center gap-1 rounded-2xl border border-emerald-300/10 bg-white/[0.04] p-1">
+          <div
+            role="group"
+            aria-label="Toggle education view"
+            className="inline-flex items-center gap-1 rounded-2xl border border-emerald-300/10 bg-white/[0.04] p-1"
+          >
             <button
+              type="button"
               onClick={() => setView("cards")}
+              aria-pressed={view === "cards"}
               className={`flex items-center gap-1 rounded-xl px-2 py-1 text-xs ${
                 view === "cards" ? "bg-white/10 text-white" : "text-neutral-300 hover:bg-white/10"
               }`}
-              aria-label="Cards view"
             >
               <LayoutGrid className="h-4 w-4" />
               Cards
             </button>
             <button
+              type="button"
               onClick={() => setView("timeline")}
+              aria-pressed={view === "timeline"}
               className={`flex items-center gap-1 rounded-xl px-2 py-1 text-xs ${
                 view === "timeline" ? "bg-white/10 text-white" : "text-neutral-300 hover:bg-white/10"
               }`}
-              aria-label="Timeline view"
             >
               <Rows className="h-4 w-4" />
               Timeline
@@ -102,10 +111,13 @@ export default function Education() {
                   variants={item}
                   className="relative overflow-hidden rounded-2xl border border-emerald-300/10 bg-white/[0.04] p-6 backdrop-blur-sm outline-none transition-all hover:border-emerald-300/25 hover:shadow-[0_0_28px_rgba(52,211,153,0.22)]"
                 >
-                  <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent opacity-70" />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent opacity-70"
+                  />
                   <div className="flex items-start gap-3">
                     <div className="mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-300/10 bg-white/5">
-                      <GraduationCap className="h-4.5 w-4.5 text-emerald-300" />
+                      <GraduationCap className="h-[18px] w-[18px] text-emerald-300" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-white">{s.degree}</h3>
@@ -133,7 +145,10 @@ export default function Education() {
               exit={{ opacity: 0, y: -8 }}
               className="relative"
             >
-              <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-emerald-400/40 via-emerald-400/10 to-transparent" />
+              <div
+                aria-hidden
+                className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-emerald-400/40 via-emerald-400/10 to-transparent"
+              />
               <div className="space-y-6">
                 {grouped.map((s, i) => (
                   <motion.div
@@ -144,7 +159,10 @@ export default function Education() {
                     viewport={{ once: true, amount: 0.3 }}
                     className="relative pl-12"
                   >
-                    <span className="absolute left-0 top-2 inline-flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border border-emerald-300/20 bg-white/[0.06] backdrop-blur-sm">
+                    <span
+                      aria-hidden
+                      className="absolute left-0 top-2 inline-flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border border-emerald-300/20 bg-white/[0.06] backdrop-blur-sm"
+                    >
                       <span className="block h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.8)]" />
                     </span>
 
@@ -166,7 +184,10 @@ export default function Education() {
                     </div>
 
                     {i < grouped.length - 1 && (
-                      <div className="absolute left-4 top-10 h-8 w-px bg-gradient-to-b from-emerald-400/20 to-emerald-400/0" />
+                      <div
+                        aria-hidden
+                        className="absolute left-4 top-10 h-8 w-px bg-gradient-to-b from-emerald-400/20 to-emerald-400/0"
+                      />
                     )}
                   </motion.div>
                 ))}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   Search,
   Copy,
@@ -39,21 +39,30 @@ const groups: Group[] = [
   { title: "Tools & Methods", items: ["Git", "JIRA", "Confluence", "Agile/Scrum", "SDLC"] },
 ];
 
-// motion
+/** motion variants (typed so framer-motion v11+ is happy) */
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.06 } },
-};
+} as const satisfies Variants;
 
 const card = {
   hidden: { opacity: 0, y: 14, scale: 0.98 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 240, damping: 22 } },
-};
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring", stiffness: 240, damping: 22 },
+  },
+} as const satisfies Variants;
 
 const pill = {
   hidden: { opacity: 0, y: 6 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } },
-};
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 300, damping: 20 },
+  },
+} as const satisfies Variants;
 
 // localStorage keys
 const LS_SELECTED = "skills:selected";
@@ -80,7 +89,9 @@ export default function Skills() {
       if (e && typeof e === "object") setExpanded(e);
       const v = localStorage.getItem(LS_VIEW) as ViewMode | null;
       if (v === "pills" || v === "tiles") setView(v);
-    } catch {}
+    } catch {
+      // ignore
+    }
   }, []);
 
   // persist
@@ -89,7 +100,8 @@ export default function Skills() {
   useEffect(() => localStorage.setItem(LS_VIEW, view), [view]);
 
   // expand/collapse
-  const toggleExpand = (t: string) => setExpanded((e) => ({ ...e, [t]: e[t] === undefined ? false : !e[t] }));
+  const toggleExpand = (t: string) =>
+    setExpanded((e) => ({ ...e, [t]: e[t] === undefined ? false : !e[t] }));
   const expandAll = () =>
     setExpanded(groups.reduce((acc, g) => ({ ...acc, [g.title]: true }), {} as Record<string, boolean>));
   const collapseAll = () =>
@@ -160,7 +172,7 @@ export default function Skills() {
     return (
       <>
         {text.slice(0, idx)}
-        <span className="rounded-[3px] bg-emerald-400/20 px-0.5 text-emerald-200">
+        <span className="rounded-[3px] bg-emerald-400/20 px-0.5 text-emerald-2 00">
           {text.slice(idx, idx + q.length)}
         </span>
         {text.slice(idx + q.length)}
@@ -298,7 +310,7 @@ export default function Skills() {
                 variants={card}
                 className="relative overflow-hidden rounded-2xl border border-emerald-300/10 bg-white/[0.04] p-5 backdrop-blur-sm outline-none transition-all hover:border-emerald-300/25 hover:shadow-[0_0_32px_rgba(52,211,153,0.22)]"
               >
-                {/* accent line to match Projects */}
+                {/* accent line */}
                 <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent opacity-70" />
 
                 <div className="flex w-full items-start justify-between gap-3">
