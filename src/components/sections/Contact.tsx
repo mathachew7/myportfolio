@@ -1,39 +1,16 @@
+// src/components/sections/Contact.tsx
 import { Mail, Linkedin, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 
-// Prefilled email (nice recruiter UX)
 const MAIL = `mailto:ysubash0011@gmail.com?subject=Opportunity%20for%20Data%20Engineer%2FAnalyst&body=Hi%20Subash%2C%0A%0AWe%27d%20love%20to%20chat%20about%20...%0A%0AThanks%2C%0A`;
 const LINKEDIN = "https://linkedin.com/in/mathachew7";
 
-// Resolve resume path for different deploys:
-// - CRA/Plain/Vercel root: "/Subash_Yadav_Resume.pdf"
-// - Vite with base: import.meta.env.BASE_URL + file
-// - Next.js with basePath: process.env.NEXT_PUBLIC_BASE_PATH + file
-function getResumeUrl() {
-  // Vite style
-  const viteBase =
-    typeof import.meta !== "undefined" &&
-    (import.meta as any).env &&
-    (import.meta as any).env.BASE_URL;
-
-  // Next.js style
-  const nextBase =
-    typeof process !== "undefined" &&
-    (process as any).env &&
-    (process as any).env.NEXT_PUBLIC_BASE_PATH;
-
-  const base = (viteBase || nextBase || "").toString().replace(/\/$/, "");
-  const path = "Subash_Yadav_Resume.pdf"; // place the PDF in /public
-
-  return `${base ? `${base}/` : "/"}${path}`;
-}
+// Vite base-aware public URL
+const RESUME = `${import.meta.env.BASE_URL || "/"}Subash_Yadav_Resume.pdf`;
 
 export default function Contact() {
-  const RESUME = getResumeUrl();
-
   return (
     <section id="contact" className="relative w-full py-24">
-      {/* full-bleed gradient (on-brand) */}
       <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_20%_-10%,rgba(16,185,129,0.10),transparent),radial-gradient(1000px_480px_at_90%_20%,rgba(79,70,229,0.10),transparent),linear-gradient(135deg,#07140f_0%,#0a1b14_50%,#07140f_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-72 w-72 rounded-full bg-emerald-400/15 blur-[100px]" />
 
@@ -51,32 +28,17 @@ export default function Contact() {
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href={MAIL}
-              aria-label="Email Subash"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-5 py-3 text-sm font-medium text-black shadow-sm transition hover:opacity-90"
-            >
+            <a href={MAIL} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-5 py-3 text-sm font-medium text-black shadow-sm transition hover:opacity-90">
               <Mail className="h-4 w-4" />
               Email Me
             </a>
 
-            <a
-              href={LINKEDIN}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Open LinkedIn profile"
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/50 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-400/10"
-            >
+            <a href={LINKEDIN} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/50 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-400/10">
               <Linkedin className="h-4 w-4" />
               LinkedIn
             </a>
 
-            {/* Résumé (PDF must live in /public) */}
-            <a
-              href={RESUME}
-              download
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/50 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-400/10"
-            >
+            <a href={RESUME} download className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/50 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-400/10">
               <FileText className="h-4 w-4" />
               Download Résumé
             </a>
