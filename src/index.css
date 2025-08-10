@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* define your custom color tokens if you still want them */
+@theme {
+  --color-dark: #0b0f19;
+}
+
+/* set global defaults */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    @apply text-white antialiased;
+    /* hero-like gradient background */
+    background: linear-gradient(to bottom right, #07140f, #0a1b14, #07140f);
+  }
+}
