@@ -11,10 +11,10 @@ export default function App() {
     <div className="min-h-screen bg-dark text-white">
       <Hero />
       <About />
-      <Experience />
+      {/* <Experience /> */}
       <Projects />
       <Skills />
-      {/* <Education /> */}
+      <Education />
       <Contact />
     </div>
   );
