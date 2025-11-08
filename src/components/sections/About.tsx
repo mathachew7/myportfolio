@@ -5,8 +5,8 @@ export default function About() {
 
   const stats = [
     { label: "Years experience", value: "3+" },
-    { label: "Dashboards shipped", value: "20+" },
-    { label: "ETL pipelines", value: "12+" },
+    { label: "Projects delivered", value: "25+" },
+    { label: "Pipelines & Models", value: "20+" },
     { label: "Savings unlocked", value: "$3.5M+" },
   ];
 
@@ -28,17 +28,18 @@ export default function About() {
         >
           <p className="text-xs tracking-[0.3em] text-emerald-300/80">ABOUT</p>
           <h2 className="mt-2 text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
-            Turning messy data into reliable systems and clear decisions.
+            From raw data to intelligent systems and actionable insights.
           </h2>
           <p className="mt-4 max-w-prose leading-relaxed text-emerald-50/85">
-            I’m a data engineer & analyst focused on building robust pipelines,
-            dimensional models, and dashboards that move the business. I work
-            across Python, SQL, Power BI/Tableau, and AWS (S3/Redshift/Athena)
-            to automate refreshes, reduce latency, and surface actionable KPIs.
+            I design data systems that connect engineering precision with analytical depth and
+            machine learning intelligence. My work spans the full data lifecycle — from building
+            ingestion pipelines and scalable models to delivering insights and automation that
+            drive smarter decisions.
           </p>
           <p className="mt-3 max-w-prose text-emerald-50/70">
-            Recent wins include reducing manual reporting by 40%, enabling daily
-            refresh cycles, and identifying $3.5M+ in savings via deep analysis.
+            Skilled in Python, SQL, and cloud-native tooling (AWS, Azure, GCP), I focus on creating
+            clean, reliable, and explainable data flows that power both analytics and AI systems —
+            bridging the gap between infrastructure, intelligence, and impact.
           </p>
         </motion.div>
 

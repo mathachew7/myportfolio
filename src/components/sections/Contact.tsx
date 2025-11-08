@@ -55,7 +55,7 @@ export default function Contact() {
               LinkedIn
             </a>
 
-            <a
+            {/* <a
               href={RESUME}
               download
               aria-label="Download résumé"
@@ -63,7 +63,7 @@ export default function Contact() {
             >
               <FileText className="h-4 w-4" />
               Download Résumé
-            </a>
+            </a> */}
           </div>
 
           <p className="mt-4 text-xs text-neutral-400">Avg. response: &lt; 24 hours</p>

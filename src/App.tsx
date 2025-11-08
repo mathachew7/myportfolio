@@ -4,6 +4,7 @@ import Projects from "./components/sections/Projects";
 import Skills from "./components/sections/Skills";
 import Education from "./components/sections/Education";
 import Contact from "./components/sections/Contact";
+import Certifications from "./components/sections/Certifications";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
       <Projects />
       <Skills />
       <Education />
+      <Certifications />
       <Contact />
     </div>
   );
