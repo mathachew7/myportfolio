@@ -159,13 +159,13 @@ export default function Hero() {
               >
                 Contact
               </a>
-              <a
+              {/* <a
                 href="/Subash_Yadav_Resume.pdf"
                 download
                 className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 backdrop-blur transition hover:bg-white/10"
               >
                 Download Résumé
-              </a>
+              </a> */}
             </motion.div>
           </div>
 
