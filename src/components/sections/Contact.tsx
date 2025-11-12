@@ -1,13 +1,13 @@
 // src/components/sections/Contact.tsx
-import { Mail, Linkedin, FileText } from "lucide-react";
+import { Mail, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const MAIL =
   "mailto:ysubash0011@gmail.com?subject=Opportunity%20for%20Data%20Engineer%2FAnalyst&body=Hi%20Subash%2C%0A%0AWe%27d%20love%20to%20chat%20about%20...%0A%0AThanks%2C%0A";
 const LINKEDIN = "https://linkedin.com/in/mathachew7";
 
-// Use the same filename everywhere and place it in /public
-const RESUME = "/Subash_Yadav_Resume.pdf";
+// // Use the same filename everywhere and place it in /public
+// const RESUME = "/Subash_Yadav_Resume.pdf";
 
 export default function Contact() {
   return (
