@@ -18,7 +18,13 @@ const certs: Cert[] = [
     logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
     link: "https://www.credly.com/badges/2d65a8fe-8e45-4efc-a882-aae94ef4438a",
   },
-//    ,
+  {
+    title: "HackerRank Skills Certifications – Software Engineer & SQL (Advanced)",
+    org: "HackerRank",
+    date: "Issued: 2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/6/65/HackerRank_logo.png",
+    link: "https://www.hackerrank.com/profile/mathachew7",
+  },
 ];
 
 const spring: Transition = { type: "spring", stiffness: 240, damping: 22 };
